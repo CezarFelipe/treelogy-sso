@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.wso2.carbon.logging.propfile
+Bundle-Name: org.wso2.carbon.logging.propfile
+Bundle-Version: 1.0.0
+Bundle-ClassPath: .
+Bundle-ManifestVersion: 2
+Fragment-Host: org.wso2.carbon.logging
+
