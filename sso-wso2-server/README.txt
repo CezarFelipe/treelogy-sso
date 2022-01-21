@@ -1,183 +1,193 @@
-WSO2 Data Services Server 3.5.1
--------------
+==========================
+WSO2 Identity Server 5.11.0
+==========================
 
-16 Sep 2016
+Welcome to the WSO2 Identity Server 5.11.0 release.
 
-Welcome to the Data Services Server 3.5.1 release
+WSO2 Identity Server is an open source Identity and Access Management solution federating and managing identities across
+both enterprise and cloud service environments. It supports a wide array of authentication protocols such as
+SAML 2.0 Web SSO, OAuth 2.0/1.0a, OpenID Connect and WS-Federation Passive. It supports role based authorization and
+fine grained authorization with XACML 2.0/3.0 while inbound/outbound provisioning is supported through SCIM.
 
-WSO2 Data Services Server is an enterprise ready Web services engine powered by Apache Axis2 and
-which offers a complete middleware solution. It is a lightweight, high
-performing platform for Service Oriented Architecture, enabling business logic
-and applications. Bringing together a number of Apache Web services projects,
-WSO2 Data Services Server provides a secure, transactional and reliable runtime for deploying
-and managing Web services.
+WSO2 Identity Server is developed on top of the revolutionary WSO2 Carbon platform, an OSGi based framework that provides
+seamless modularity to your SOA solution via componentization.
 
-This is based on the revolutionary WSO2 Carbon framework. All the major features
-have been developed as pluggable Carbon components.
-
-Key Features
-------------
-
-* Enable Clustering with Hazelcast
-* Dynamic Query Support
-* Escape non printable characters
-* Error handling in clustered environment
-* Improved Patches and Service packs installation model
-* Multi-profile support at the Carbon platform which enables a Carbon based product to behave in multiple modes/profiles
-* Feature Categorization
-
-
-Installation & Running
-----------------------
-1. Extract the downloaded zip file
-2. Run the wso2server.sh or wso2server.bat file in the bin directory
-3. Once the server starts, point your Web browser to
-   https://localhost:9443/carbon/
-
-For more details, see the Installation Guide.
 
 System Requirements
--------------------
+===================
 
-1. Minimum memory - 1GB
-2. Processor      - Pentium 800MHz or equivalent at minimum
-3. The Management Console requires full Javascript enablement of the Web browser
-   NOTE:
-     On Windows Server 2003, it is not allowed to go below the medium security
-     level in Internet Explorer 6.x.
+1. Minimum memory - 2 GB
+
+2. Processor - 2 Core/vCPU 1.1GHz or higher.
+
+3. Java SE Development Kit 1.8
+
+4. The Management Console requires full Javascript enablement of the Web browser.
+
+5. To build WSO2 Identity Server from the Source distribution, it is also necessary that you have Maven 3 or later.
 
 For more details see
-http://docs.wso2.org/wiki/display/Carbon400/Installation+Prerequisites
+   https://is.docs.wso2.com/en/5.11.0/setup/installation-prerequisites
 
-Known Issues
-------------
 
-All known issues have been recorded at https://wso2.org/jira/browse/DS
+Project Resources
+=================
 
-Samples:-
+* Home page          : http://wso2.com/products/identity-server
+* Library            : http://wso2.org/library/identity
+* Wiki               : https://is.docs.wso2.com/en/5.11.0
+* Issue Tracker      : https://github.com/wso2/product-is/issues
+* Forums             : http://stackoverflow.com/questions/tagged/wso2is/
+* WSO2 Developer List: dev@wso2.org
 
-The CSV and Excel samples may not work under different application servers, because,
-the given relative paths of CSV and Excel files may be invalid. The currently set file 
-paths work under the standalone version of Data Services Server.
+    
+Installation and Running
+========================
 
-Data Services Server Binary Distribution Directory Structure
---------------------------------------------
+1. Extract the downloaded zip file
+2. Run the wso2server.sh or wso2server.bat file in the /bin directory
+3. Once the server starts, point your Web browser to https://localhost:9443/carbon/
+4. User dashboard is available at https://localhost:9443/myaccount
+5. For more information, see the Installation Guide
+    https://is.docs.wso2.com/en/5.11.0/setup/installing-the-product
 
-	CARBON_HOME
-		|- bin <folder>
-		|- dbscripts <folder>
-		|- lib <folder>
-		|- repository <folder>
-		|   |- carbonapps <folder>
-		|   |- components <folder>
-        	|   |- conf <folder>
-        	|   |- data <folder>
-        	|   |- database <folder>
-        	|   |- deployment <folder>
-        	|   |- logs <folder>
-        	|   |- resources <folder>
-        	|       |- security <folder>
-        	|   |- tenants <folder>
-		|- resources <folder>
-                |- samples <folder>
-		|- tmp <folder>
-		|- webapp-mode <folder>
-		|- INSTALL.txt <file> 
-		|- LICENSE.txt <file>
-		|- README.txt <file> 
-		|- release-notes.html <file>
 
-    	- bin
-	  Contains various scripts .sh & .bat scripts
+WSO2 Identity Server Distribution Directory Structure
+==============================================
 
-	- dbscripts
-          Contains the SQL scripts for setting up the database on a variety of
-          Database Management Systems, including H2, Derby, MSSQL, MySQL abd
-          Oracle.
 
-	- docs
-          Contains WSO2 Data Services Server documentation.
+            CARBON_HOME
+                    |--- bin
+                    |--- dbscripts
+                    |--- lib
+                    |--- repository
+                    |       |--- components
+                    |       |--- conf
+                    |       |       |--- identity
+                    |       |       |--- identity-providers
+                    |       |       |--- service-providers
+                    |       |--- database
+                    |       |--- deployment
+                    |       |--- logs
+                    |       |--- resources
+                    |       |       |--- identity
+                    |       |       |--- security
+                    |       |--- tenants
+                    |--- tmp
 
-	- lib
-	  Contains the basic set of libraries required to startup WSO2 Data Services Server
-	  in standalone mode
 
-	- repository
-      	  The repository where services and modules deployed in WSO2 Data Services Server
-          are stored.
+    - bin
+      Contains various scripts .sh & .bat scripts.
 
-		- carbonapps
-          	Carbon Application hot deployment directory.
+    - dbscripts
+      Contains the database creation & seed data population SQL scripts for
+      various supported databases.
 
-        	- components
-          	Contains OSGi bundles and configurations
-      
-        	- conf
-          	Contains configuration files
+    - lib
+      Contains the basic set of libraries required to startup Carbon.
 
-        	- data
-          	Contains various data files, including binary transaction logs
-         
-        	- database
-          	Contains the database
+    - repository
+      The repository where Carbon artifacts & Axis2 services and
+      modules deployed in WSO2 Carbon are stored.
+      In addition to this other custom deployers such as
+      dataservices and axis1services are also stored.
 
-        	- deployment
-          	Contains Axis2 deployment details
+        - components
+          Contains all OSGi related libraries and configurations.
 
-        	- lib
-          	Contains all the jar files required by Axis2 clients as dependancies,
-                these has to be first generated by running "ant" from /bin
-          
-        	- logs
-          	Contains all log files created during execution
+        - conf
+          Contains server configuration files. Ex: axis2.xml, carbon.xml
 
-        	- resources
-	        Contains additional resources that may be required
+	        - identity
+	          Contains all configurations related to identity.
 
-                    - security
-                      Contains security resources
+	            - identity-providers
+	              Identity providers configured using file
 
-        	- tenants
-          	Contains tenant details
-      
-	- samples
-	  Contains some sample applications that demonstrate the functionality
-	  and capabilities of WSO2 Data Services Server
+	            - service-providers
+	              Service providers configured using file
 
-	- tmp
-	  Used for storing temporary files, and is pointed to by the
-	  java.io.tmpdir System property
+        - database
+          Contains the WSO2 Registry & User Manager database.
 
-	- webapp-mode
-      	  The user has the option of running WSO2 Carbon in webapp mode (hosted as a web-app in an application server).
-          This directory contains files required to run Carbon in webapp mode.
+        - deployment
+          Contains server side and client side Axis2 repositories.
+	      All deployment artifacts should go into this directory.
 
-	- LICENSE.txt
-	  License information of all the jar files used in WSO2 Data Services Server
+        - logs
+          Contains all log files created during execution.
 
-	- README.txt
-	  This document.
+        - resources
+          Contains additional resources that may be required.
 
-	- INSTALL.txt
-          This document will contain information on installing WSO2 Data Services Server
+	- tenants
+	  Directory will contain relevant tenant artifacts
+	  in the case of a multitenant deployment.
 
-	- release-notes.html
-	  Release information for WSO2 Data Services Server 3.5.1
+    - tmp
+      Used for storing temporary files, and is pointed to by the
+      java.io.tmpdir System property.
 
+
+    - LICENSE.txt
+      Apache License 2.0 under which WSO2 Carbon is distributed.
+
+    - README.txt
+      This document.
+
+    - release-notes.html
+      Release information for WSO2 Carbon 5.11.0.
+
+Secure sensitive information in carbon configuration files
+----------------------------------------------------------
+
+There are sensitive information such as passwords in the carbon configuration. 
+You can secure them by using secure vault. Please go through following steps to 
+secure them with default mode. 
+
+1. Configure secure vault with default configurations by running ciphertool 
+	script from bin directory.  
+
+> ciphertool.sh -Dconfigure   (in UNIX)  
+
+This script would do following configurations that you need to do by manually 
+
+(i) Replaces sensitive elements in configuration files,  that have been defined in
+		 cipher-tool.properties, with alias token values.  
+(ii) Encrypts plain text password which is defined in cipher-text.properties file.
+(iii) Updates secret-conf.properties file with default keystore and callback class. 
+
+cipher-tool.properties, cipher-text.properties and secret-conf.properties files 
+			can be found at repository/conf/security directory. 
+
+2. Start server by running wso2server script from bin directory
+
+> wso2server.sh   (in UNIX)
+
+By default mode, it would ask you to enter the master password 
+(By default, master password is the password of carbon keystore and private key) 
+
+3. Change any password by running ciphertool script from bin directory.  
+
+> ciphertool -Dchange  (in UNIX)
+
+For more details see
+https://is.docs.wso2.com/en/5.11.0/setup/encrypting-passwords-with-cipher-tool
 
 Support
--------
+=======
+We are committed to ensuring that your enterprise middleware deployment is completely supported from
+evaluation to production. Our unique approach ensures that all support leverages our open development
+methodology and is provided by the very same engineers who build the technology.
 
-WSO2 Inc. offers a variety of development and production support
-programs, ranging from Web-based support up through normal business
-hours, to premium 24x7 phone support.
+For more details and to take advantage of this unique opportunity, visit http://wso2.com/support/.
 
-For additional support information please refer to http://wso2.com/support/
 
-For more information on WSO2 Data Services Server, visit the WSO2 Oxygen Tank (http://wso2.org)
+For more information on WSO2 Carbon, visit the WSO2 Oxygen Tank (http://wso2.org)
+
 
 Crypto Notice
--------------
+=============
 
 This distribution includes cryptographic software.  The country in
 which you currently reside may have restrictions on the import,
@@ -201,14 +211,16 @@ code and source code.
 The following provides more details on the included cryptographic
 software:
 
-Apacge Rampart   : http://ws.apache.org/rampart/
+Apache Rampart   : http://ws.apache.org/rampart/
 Apache WSS4J     : http://ws.apache.org/wss4j/
 Apache Santuario : http://santuario.apache.org/
 Bouncycastle     : http://www.bouncycastle.org/
 
+For more information about WSO2 Identity Server please see http://wso2.org/projects/identity or visit the
+WSO2 Oxygen Tank developer portal for addition resources.
 
-For further details, see the WSO2 Carbon documentation at
-https://docs.wso2.com/display/DSS351/WSO2+Data+Services+Server+Documentation
+For further details, see the WSO2 Identity Server documentation at
+https://is.docs.wso2.com/en/5.11.0
 
 ---------------------------------------------------------------------------
- Copyright 2012 WSO2 Inc.
+(c) Copyright 2020 WSO2 Inc.

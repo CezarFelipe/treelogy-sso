@@ -47,7 +47,7 @@ goto end
 
 :okJavaHome
 rem check the CARBON_HOME environment variable
-
+setlocal EnableDelayedExpansion
 set CURRENT_DIR=%cd%
 if not "%CARBON_HOME%" == "" goto gotHome
 set CARBON_HOME=%CURRENT_DIR%
@@ -71,7 +71,6 @@ goto end
 
 :okHome
 rem set the classes
-setlocal EnableDelayedExpansion
 rem loop through the libs and add them to the class path
 cd "%CARBON_HOME%"
 call ant -buildfile "%CARBON_HOME%\bin\build.xml" -q
@@ -84,6 +83,6 @@ echo Using CARBON_HOME:   %CARBON_HOME%
 echo Using JAVA_HOME:    %JAVA_HOME%
 set _RUNJAVA="%JAVA_HOME%\bin\java"
 
-%_RUNJAVA% %JAVA_OPTS% -Dcarbon.home="%CARBON_HOME%" -cp "%CARBON_CLASSPATH%" org.wso2.ciphertool.CipherTool %*
+%_RUNJAVA% %JAVA_OPTS% -Dcarbon.home="%CARBON_HOME%" -Dcarbon.config.dir.path="%CARBON_HOME%\repository\conf" -cp "%CARBON_CLASSPATH%" org.wso2.ciphertool.CipherTool %*
 endlocal
 :end

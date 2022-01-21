@@ -1,4 +1,4 @@
-WSO2 Data Services Server v3.5.1
+WSO2 Identity Server v5.11.0
 
 
 This file explains the usages of all the scripts contained within
@@ -177,3 +177,6 @@ this directory.
     - A simple text file used for storing the Carbon kernel version
 
 10. carbondump.sh & carbondump.bat - Carbondump is a tool for collecting all the necessary data from a running Carbon instance at the time of an error. The carbondump generates a zip archive with the collected data, which can be used to analyze your system and determine the problem which caused the error.
+
+11. forgetme.sh & forgetme.bat - Forgetme is a tool to anonymize deleted user information from metadata tables and log files. This tool will replace the given user name with a given or random pseudonym.
+

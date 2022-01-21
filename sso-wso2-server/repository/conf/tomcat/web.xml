@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
-  ~ Copyright 2005-2011 WSO2, Inc. (http://wso2.com)
+  ~ Copyright 2019 WSO2, Inc. (http://wso2.com)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -93,6 +93,8 @@
     <!--                                                                      -->
     <!--
                                                                       -->
+
+
     <servlet>
         <servlet-name>default</servlet-name>
         <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
@@ -241,6 +243,14 @@
         <init-param>
             <param-name>xpoweredBy</param-name>
             <param-value>false</param-value>
+        </init-param>
+        <init-param>
+            <param-name>compilerSourceVM</param-name>
+            <param-value>1.8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>compilerTargetVM</param-name>
+            <param-value>1.8</param-value>
         </init-param>
         <load-on-startup>3</load-on-startup>
     </servlet>
@@ -476,6 +486,7 @@
 
     <session-config>
         <session-timeout>30</session-timeout>
+        <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
 
@@ -1216,5 +1227,6 @@
         <welcome-file>index.htm</welcome-file>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
 
 </web-app>

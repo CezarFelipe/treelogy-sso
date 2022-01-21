@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2005-2011 WSO2, Inc. (http://wso2.com)
+  ~ Copyright 2019 WSO2, Inc. (http://wso2.com)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
   -->
 
 <!-- The contents of this file will be loaded for each web application -->
-<Context privileged="true" allowLinking="true" useHttpOnly="true" useRelativeRedirects="false">
+<Context privileged="true" useHttpOnly="true" useRelativeRedirects="false">
+    <Resources allowLinking="true" />
 
     <!-- Default set of monitored resources -->
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
@@ -29,5 +30,6 @@
     <!-- Following are default values. But we specifically add them in kernel, becuase they get overridden in WSO2 AS -->
     <Loader className="org.apache.catalina.loader.WebappLoader"
             loaderClass="org.apache.catalina.loader.WebappClassLoader"/>
+
 
 </Context>

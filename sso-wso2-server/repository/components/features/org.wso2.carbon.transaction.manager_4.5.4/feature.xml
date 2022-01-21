@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<feature id="org.wso2.carbon.transaction.manager" label="WSO2 Carbon - Transaction Manager Feature" provider-name="%providerName" version="4.5.4">
-  <description>Transaction-Manager feature</description>
-  <copyright>%copyright</copyright>
-  <license url="%licenseURL">%license</license>
-  <includes id="org.wso2.carbon.transaction.manager.server" optional="false" version="4.5.4"/>
-</feature>

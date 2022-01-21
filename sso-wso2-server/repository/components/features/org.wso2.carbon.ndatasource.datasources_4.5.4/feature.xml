@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<feature id="org.wso2.carbon.ndatasource.datasources" label="WSO2 Carbon - New Datasource Management Datasources Feature" provider-name="%providerName" version="4.5.4">
-  <description>This feature contains the bundles required for Custom JDBC Datasources functionality</description>
-  <copyright>%copyright</copyright>
-  <license url="%licenseURL">%license</license>
-  <plugin id="org.wso2.carbon.ndatasource.datasources" unpack="false" version="4.5.4"/>
-</feature>

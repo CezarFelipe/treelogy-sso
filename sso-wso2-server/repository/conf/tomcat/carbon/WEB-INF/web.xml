@@ -18,12 +18,13 @@
  -->
 <!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
         "http://java.sun.com/dtd/web-app_2_3.dtd">
-<web-app id="WebApp">
+<web-app id="WebApp" metadata-complete="true">
+    <absolute-ordering />
 
     <!-- OWASP CSRFGuard per-application configuration property file location-->
     <context-param>
         <param-name>Owasp.CsrfGuard.Config</param-name>
-        <param-value>/repository/conf/security/Owasp.CsrfGuard.Carbon.properties</param-value>
+        <param-value>repository/conf/security/Owasp.CsrfGuard.Carbon.properties</param-value>
     </context-param>
 
     <servlet id="bridge">
@@ -76,57 +77,64 @@
 
     <!-- Tomcat http header security filter -->
     <filter>
-        <filter-name>HttpHeaderSecurityFilter</filter-name>
-        <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
-        <init-param>
-            <param-name>hstsEnabled</param-name>
-            <param-value>false</param-value>
-        </init-param>
-    </filter>
+ <filter-name>HttpHeaderSecurityFilter</filter-name>
+ <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
+ <init-param>
+ <param-name>hstsEnabled</param-name>
+ <param-value>false</param-value>
+ </init-param>
+ <init-param>
+ <param-name>antiClickJackingEnabled</param-name>
+ <param-value>false</param-value>
+ </init-param>
+ </filter>
 
-    <filter>
-        <filter-name>HttpHeaderSecurityFilter_Tools</filter-name>
-        <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
-        <init-param>
-            <param-name>hstsEnabled</param-name>
-            <param-value>false</param-value>
-        </init-param>
-        <init-param>
-            <param-name>blockContentTypeSniffingEnabled</param-name>
-            <param-value>false</param-value>
-        </init-param>
-        <init-param>
-            <param-name>xssProtectionEnabled</param-name>
-            <param-value>false</param-value>
-        </init-param>
-        <init-param>
-            <param-name>antiClickJackingOption</param-name>
-            <param-value>SAMEORIGIN</param-value>
-        </init-param>
-    </filter>
-
-
-    <filter-mapping>
-        <filter-name>HttpHeaderSecurityFilter</filter-name>
-        <url-pattern>*</url-pattern>
-    </filter-mapping>
+ <filter>
+ <filter-name>HttpHeaderSecurityFilter_EnableAntiClickJacking</filter-name>
+ <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
+ <init-param>
+ <param-name>hstsEnabled</param-name>
+ <param-value>false</param-value>
+ </init-param>
+ <init-param>
+ <param-name>blockContentTypeSniffingEnabled</param-name>
+ <param-value>false</param-value>
+</init-param>
+<init-param>
+<param-name>xssProtectionEnabled</param-name>
+<param-value>false</param-value>
+</init-param>
+</filter>
 
     <filter-mapping>
-        <filter-name>HttpHeaderSecurityFilter_Tools</filter-name>
-        <url-pattern>/services/WSDLValidatorService/*</url-pattern>
-        <url-pattern>/fileupload/wsdl</url-pattern>
-        <url-pattern>/fileupload/tools</url-pattern>
-    </filter-mapping>
+ <filter-name>HttpHeaderSecurityFilter</filter-name>
+ <url-pattern>*</url-pattern>
+ </filter-mapping>
 
-    <filter-mapping>
-        <filter-name>CharsetFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+ <filter-mapping>
+ <filter-name>CharsetFilter</filter-name>
+ <url-pattern>/*</url-pattern>
+ </filter-mapping>
 
-    <filter-mapping>
-        <filter-name>CSRFGuard</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+ <filter-mapping>
+ <filter-name>HttpHeaderSecurityFilter_EnableAntiClickJacking</filter-name>
+ <url-pattern>/carbon/*</url-pattern>
+ <url-pattern>/services/*</url-pattern>
+ <url-pattern>/samlsso/*</url-pattern>
+ <url-pattern>/openid/*</url-pattern>
+ <url-pattern>/openidserver/*</url-pattern>
+ <url-pattern>/passivests/*</url-pattern>
+ <url-pattern>/acs/*</url-pattern>
+ <url-pattern>/iwa/*</url-pattern>
+ <url-pattern>/identity/*</url-pattern>
+ <url-pattern>/thriftAuthenticator/*</url-pattern>
+ </filter-mapping>
+
+ <filter-mapping>
+ <filter-name>CSRFGuard</filter-name>
+ <url-pattern>/*</url-pattern>
+ </filter-mapping>
+
 
     <!-- OWASP CSRFGuard context listener used to read CSRF configuration -->
     <listener>
@@ -138,11 +146,26 @@
         <listener-class>org.owasp.csrfguard.CsrfGuardHttpSessionListener</listener-class>
     </listener>
 
-    <session-config>
+    <filter>
+ <filter-name>CaptchaFilter</filter-name>
+ <filter-class>org.wso2.carbon.identity.captcha.filter.CaptchaFilter</filter-class>
+ </filter>
+
+ <filter-mapping>
+ <filter-name>CaptchaFilter</filter-name>
+ <url-pattern>/samlsso</url-pattern>
+ <url-pattern>/oauth2</url-pattern>
+ <url-pattern>/commonauth</url-pattern>
+ <dispatcher>FORWARD</dispatcher>
+ <dispatcher>REQUEST</dispatcher>
+ </filter-mapping>
+
+ <session-config>
         <session-timeout>15</session-timeout>
         <cookie-config>
             <secure>true</secure>
         </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
     <!-- custom error pages -->

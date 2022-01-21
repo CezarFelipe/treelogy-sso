@@ -1,5 +1,5 @@
 <!--
-~ Copyright 2005-2011 WSO2, Inc. (http://wso2.com)
+~ Copyright 2019 WSO2, Inc. (http://wso2.com)
 ~
 ~ Licensed under the Apache License, Version 2.0 (the "License");
 ~ you may not use this file except in compliance with the License.
@@ -13,13 +13,12 @@
 ~ See the License for the specific language governing permissions and
 ~ limitations under the License.
 -->
-
 <!--
    This file is used to configuring the JMX server. You can disable the JMX RMI server from starting
    by setting the value of the StartRMIServer to false.
 -->
 <JMX xmlns="http://wso2.org/projects/carbon/jmx.xml">
-    <StartRMIServer>true</StartRMIServer>
+    <StartRMIServer>false</StartRMIServer>
 
     <!-- HostName, or Network interface to which this RMI server should be bound -->
     <HostName>localhost</HostName>
