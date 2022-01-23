@@ -26,7 +26,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 	@Autowired
 	private JwtTokenStore jwtTokenStore;
 	
-	private static final String[] PUBLIC = {"/swagger-ui.html","/hr-oauth/oauth/token"};
+	private static final String[] PUBLIC = {"/v3/api-docs","/swagger-ui/**","/hr-oauth/oauth/token"};
 	
 	private static final String[] OPERATOR =  {"/hr-worker/**"};
 	
