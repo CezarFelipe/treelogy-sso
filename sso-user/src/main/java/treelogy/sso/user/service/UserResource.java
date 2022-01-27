@@ -1,6 +1,9 @@
 package treelogy.sso.user.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +23,10 @@ import treelogy.sso.user.repository.UserRepository;
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
-
+	
+	
+	private Logger logger = LoggerFactory.getLogger(UserResource.class);
+	
 	@Autowired
 	private UserRepository repository;
 
@@ -35,9 +41,9 @@ public class UserResource {
 	@GetMapping(value = "/search")
 	@ApiOperation("This is a test method")
 	public ResponseEntity<User> findByEmail(@RequestParam String email) {
-
+		
 		User obj = repository.findByEmail(email);
 		return ResponseEntity.ok(obj);
 	}
-
+	
 }
