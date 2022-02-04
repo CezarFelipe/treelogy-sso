@@ -1,4 +1,4 @@
-package treelogy.sso.administrator.models;
+ package treelogy.sso.administrator.models;
 
 import java.io.Serializable;
 

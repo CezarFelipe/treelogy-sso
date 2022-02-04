@@ -41,7 +41,7 @@ public class UserResource {
 	@GetMapping(value = "/search")
 	@ApiOperation("This is a test method")
 	public ResponseEntity<User> findByEmail(@RequestParam String email) {
-		
+
 		User obj = repository.findByEmail(email);
 		return ResponseEntity.ok(obj);
 	}

@@ -1,6 +1,7 @@
 package treelogy.sso.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +16,7 @@ public class SsoUserApplication implements CommandLineRunner{
 		SpringApplication.run(SsoUserApplication.class, args);
 	}
 
+	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
