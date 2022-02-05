@@ -1,10 +1,10 @@
-package treelogy.sso.idpintegrator;
+package treelogy.sso.apiwso2;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SsoIdpIntegratorApplicationTests {
+class SsoApiWso2ApplicationTests {
 
 	@Test
 	void contextLoads() {
