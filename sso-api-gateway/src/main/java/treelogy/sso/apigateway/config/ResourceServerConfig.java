@@ -26,11 +26,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 	@Autowired
 	private JwtTokenStore jwtTokenStore;
 	
-	private static final String[] PUBLIC = {"/lh/swagger-ui.html","/v3/api-docs","/swagger-ui/**","/sso-oauth/oauth/token"};
+	private static final String[] PUBLIC = {"/sso-oauth/oauth/token"};
 	
-	private static final String[] OPERATOR =  {"/hr-worker/**"};
-	
-	private static final String[] ADMIN =  {"/sso-user/**", "/actuator/**","/sso-oauth/actuator/**"};
+	private static final String[] OPERATOR =  {"/sso-administrator/**"};
+		
+	private String[] ADMIN = {"/sso-user/**", "/actuator/**","/sso-oauth/actuator/**","/sso-api-wso2/**"};
 	
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
@@ -39,10 +39,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		
+
 		http.authorizeRequests()
 		.antMatchers(PUBLIC).permitAll()
-		.antMatchers(HttpMethod.GET, OPERATOR).hasAnyRole("OPERATOR", "ADMIN")
+		//.antMatchers(HttpMethod.GET, OPERATOR).hasAnyRole("OPERATOR", "ADMIN")
 		.antMatchers(ADMIN).hasRole("ADMIN")
 		.anyRequest().authenticated();
 		
@@ -68,6 +68,14 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 		= new FilterRegistrationBean<>(new CorsFilter(corsConfigurationSource()));
 		bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		return bean;
+	}
+	
+	public String[] GetRole (String role) {
+		
+		String[] functionality = {"/sso-user/**", "/actuator/**","/sso-oauth/actuator/**","/sso-api-wso2/**"};
+		System.out.println(functionality);
+		return functionality;
+		
 	}
 
 }

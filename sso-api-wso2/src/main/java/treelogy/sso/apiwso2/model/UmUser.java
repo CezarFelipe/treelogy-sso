@@ -14,7 +14,8 @@ import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
 @Entity
-public class UserWso2Model implements Serializable{
+@Table(name = "um_user")
+public class UmUser implements Serializable{
 
 	/**
 	 * 
@@ -24,7 +25,7 @@ public class UserWso2Model implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "um_user_pk_seq")
 	@Column(unique = true)
-	private Integer umid;
+	private Long umid;
 	
 	private String umuserid;
 	
@@ -40,11 +41,13 @@ public class UserWso2Model implements Serializable{
 	
 	private Long umtenantid;
 
-	public Integer getUmid() {
+	
+
+	public Long getUmid() {
 		return umid;
 	}
 
-	public void setUmid(Integer umid) {
+	public void setUmid(Long umid) {
 		this.umid = umid;
 	}
 
