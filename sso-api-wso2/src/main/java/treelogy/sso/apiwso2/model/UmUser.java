@@ -10,8 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 @Entity
 @Table(name = "um_user")
@@ -25,93 +30,98 @@ public class UmUser implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "um_user_pk_seq")
 	@Column(unique = true)
-	private Long umid;
+	private Long UmId;
 	
-	private String umuserid;
+	@JsonProperty("id")
+	private String UmUserId;
 	
-	private String umusername;
+	@NotNull(message = "Username field is required")
+	@JsonProperty("username")
+	private String UmUserName;
 	
-	private String umuserpassword;
+	@NotNull(message = "Password field is required")
+	@JsonProperty("password")
+	private String UmUserPassword;
 	
-	private String umsaltvalue;
-	
-	private Boolean umrequirechange;
-	
-	private Timestamp umchangedtime;
-	
-	private Long umtenantid;
-
+	private String UmSaltValue;
 	
 
-	public Long getUmid() {
-		return umid;
+	@JsonProperty("change")
+	private Boolean UmRequireChange;
+	
+	private Timestamp UmChangedTime;
+	
+	@NotNull(message = "tenant field is required")
+	@JsonProperty("tenant")
+	private Long UmTenantId;
+
+	
+	public Long getUmId() {
+		return UmId;
 	}
 
-	public void setUmid(Long umid) {
-		this.umid = umid;
+	public void setUmId(Long umId) {
+		UmId = umId;
 	}
 
-	public String getUmuserid() {
-		return umuserid;
+	public String getUmUserId() {
+		return UmUserId;
 	}
 
-	public void setUmuserid(String umuserid) {
-		this.umuserid = umuserid;
+	public void setUmUserId(String umUserId) {
+		UmUserId = umUserId;
 	}
 
-	public String getUmusername() {
-		return umusername;
+	public String getUmUserName() {
+		return UmUserName;
 	}
 
-	public void setUmusername(String umusername) {
-		this.umusername = umusername;
+	public void setUmUserName(String umUserName) {
+		UmUserName = umUserName;
 	}
 
-	public String getUmuserpassword() {
-		return umuserpassword;
+	public String getUmUserPassword() {
+		return UmUserPassword;
 	}
 
-	public void setUmuserpassword(String umuserpassword) {
-		this.umuserpassword = umuserpassword;
+	public void setUmUserPassword(String umUserPassword) {
+		UmUserPassword = umUserPassword;
 	}
 
-	public String getUmsaltvalue() {
-		return umsaltvalue;
+	public String getUmSaltValue() {
+		return UmSaltValue;
 	}
 
-	public void setUmsaltvalue(String umsaltvalue) {
-		this.umsaltvalue = umsaltvalue;
+	public void setUmSaltValue(String umSaltValue) {
+		UmSaltValue = umSaltValue;
 	}
 
-	public Boolean getUmrequirechange() {
-		return umrequirechange;
+	public Boolean getUmRequireChange() {
+		return UmRequireChange;
 	}
 
-	public void setUmrequirechange(Boolean umrequirechange) {
-		this.umrequirechange = umrequirechange;
+	public void setUmRequireChange(Boolean umRequireChange) {
+		UmRequireChange = umRequireChange;
+	}
+	public Long getUmTenantId() {
+		return UmTenantId;
 	}
 
-	public Timestamp getUmchangedtime() {
-		return umchangedtime;
-	}
-
-	public void setUmchangedtime(Timestamp umchangedtime) {
-		this.umchangedtime = umchangedtime;
-	}
-
-	public Long getUmtenantid() {
-		return umtenantid;
-	}
-
-	public void setUmtenantid(Long umtenantid) {
-		this.umtenantid = umtenantid;
+	public void setUmTenantId(Long umTenantId) {
+		UmTenantId = umTenantId;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
+
+	public Timestamp getUmChangedTime() {
+		return UmChangedTime;
+	}
+
+	public void setUmChangedTime(Timestamp umChangedTime) {
+		UmChangedTime = umChangedTime;
+	}
 	
 	
 }
