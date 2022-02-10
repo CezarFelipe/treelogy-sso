@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 @Entity
 @Table(name = "um_user")
-public class UmUser implements Serializable{
+public class UmUserModel implements Serializable{
 
 	/**
 	 * 
