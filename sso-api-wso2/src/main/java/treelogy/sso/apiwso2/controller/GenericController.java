@@ -69,7 +69,7 @@ public class GenericController<E> {
 			resultDTO.setHttpStatus(httpStatus);
 			resultDTO.setResult(result);
 			resultDTO.setResulCount(resultDTO.getResulCount());
-			resultDTO.setType(messageModel.getType());
+			//resultDTO.setType(messageModel.getTypeMessage());
 			resultDTO.setTracemessage(msgError);
 
 			JSONBody = json.toJson(resultDTO);

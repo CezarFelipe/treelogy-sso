@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import treelogy.sso.apiwso2.model.TypeMessageModel;
+
 @Component
 public class ResultDTO<E> {
 	
-	private String type;
+	//private TypeMessageModel type;
 	private String code;
 	private String description;
 	private HttpStatus httpStatus;
@@ -17,12 +19,6 @@ public class ResultDTO<E> {
 	private Integer resulCount;
 	private String tracemessage;
 
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
 	public String getCode() {
 		return code;
 	}

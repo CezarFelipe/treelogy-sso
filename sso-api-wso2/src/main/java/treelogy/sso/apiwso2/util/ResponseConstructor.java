@@ -45,7 +45,7 @@ public class ResponseConstructor<T> {
 			resultDTO.setDescription(messageModel.getDescription());
 			resultDTO.setHttpStatus(httpStatus);
 			resultDTO.setResulCount(resultDTO.getResulCount());
-			resultDTO.setType(messageModel.getType());
+			//resultDTO.setType(messageModel.getTypeMessage());
 			
 			String JSONBody = json.toJson(resultDTO);
 			
