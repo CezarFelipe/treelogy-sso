@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 
-@EntityScan(basePackages = { "treelogy.sso.apiwso2.model" }) // varre pacotes de modelo 
-@ComponentScan(basePackages = { "treelogy.sso*" }) // varre todo o projeto - injeção de dependências 
-@EnableJpaRepositories(basePackages = { "treelogy.sso.apiwso2.repository" }) // habilita persistência 
-@EnableTransactionManagement // controle transacional (gerência de transações) 
-@EnableWebMvc // habilita MVC 
-@RestController // habilita REST (retorno de JSON) 
-@EnableAutoConfiguration // configuração automática do projeto 
-@EnableCaching
 @EnableEurekaClient
+@EntityScan(basePackages = { "treelogy.sso.apiwso2.model" }) // varre pacotes de modelo
+@ComponentScan(basePackages = { "treelogy.*" }) // varre todo o projeto - injeção de dependências
+@EnableJpaRepositories(basePackages = { "treelogy.sso.apiwso2.repository" }) // habilita persistência
+@EnableTransactionManagement // controle transacional (gerência de transações)
+@EnableWebMvc // habilita MVC
+@RestController // habilita REST (retorno de JSON)
+@EnableAutoConfiguration // configuração automática do projeto
+@EnableCaching
 @SpringBootApplication
 public class SsoApiWso2Application {
 

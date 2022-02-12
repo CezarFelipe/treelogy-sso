@@ -1,6 +1,6 @@
 package treelogy.sso.apiwso2.model;
 
-import java.io.Serializable;
+
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -10,22 +10,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+@Component
 @Entity
-@Table(name = "um_user")
-public class UmUserModel implements Serializable{
+@Table(name = "um_user", uniqueConstraints = @UniqueConstraint(columnNames = "UmId", name = "um_id"))
+@SequenceGenerator(name = "um_user_pk_seq", sequenceName = "um_user_pk_seq", allocationSize = 1, initialValue = 1)
+public class UmUser{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "um_user_pk_seq")
@@ -49,11 +46,12 @@ public class UmUserModel implements Serializable{
 	@JsonProperty("change")
 	private Boolean UmRequireChange;
 	
+	@NotNull(message = "change-time field is required")
 	private Timestamp UmChangedTime;
 	
 	@NotNull(message = "tenant field is required")
 	@JsonProperty("tenant")
-	private Long UmTenantId;
+	private Integer UmTenantId;
 
 	
 	public Long getUmId() {
@@ -103,17 +101,7 @@ public class UmUserModel implements Serializable{
 	public void setUmRequireChange(Boolean umRequireChange) {
 		UmRequireChange = umRequireChange;
 	}
-	public Long getUmTenantId() {
-		return UmTenantId;
-	}
 
-	public void setUmTenantId(Long umTenantId) {
-		UmTenantId = umTenantId;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 
 	public Timestamp getUmChangedTime() {
 		return UmChangedTime;
@@ -122,6 +110,15 @@ public class UmUserModel implements Serializable{
 	public void setUmChangedTime(Timestamp umChangedTime) {
 		UmChangedTime = umChangedTime;
 	}
+
+	public Integer getUmTenantId() {
+		return UmTenantId;
+	}
+
+	public void setUmTenantId(Integer umTenantId) {
+		UmTenantId = umTenantId;
+	}
+	
 	
 	
 }

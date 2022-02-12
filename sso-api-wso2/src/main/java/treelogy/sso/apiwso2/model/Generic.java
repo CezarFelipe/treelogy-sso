@@ -1,7 +1,6 @@
 package treelogy.sso.apiwso2.model;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -10,7 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @MappedSuperclass
-public abstract class GenericModel {
+public abstract class Generic {
 
     @Column(updatable = false)
     @CreationTimestamp

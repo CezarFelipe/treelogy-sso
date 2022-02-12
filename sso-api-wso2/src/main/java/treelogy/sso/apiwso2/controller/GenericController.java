@@ -1,34 +1,38 @@
 package treelogy.sso.apiwso2.controller;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import com.google.gson.Gson;
 
-import javassist.bytecode.Descriptor.Iterator;
-import treelogy.sso.apiwso2.dto.ResultDTO;
-import treelogy.sso.apiwso2.model.MessageModel;
-import treelogy.sso.apiwso2.repository.MessageRepository;
-import treelogy.sso.apiwso2.util.FormatDateTime;
-import treelogy.sso.apiwso2.util.ResponseConstructor;
+
+import treelogy.sso.apiwso2.dto.EventDTO;
+import treelogy.sso.apiwso2.dto.ResponseDTO;
+import treelogy.sso.apiwso2.dto.StatusDTO;
+import treelogy.sso.apiwso2.model.Event;
+import treelogy.sso.apiwso2.repository.EventRepository;
+
 
 public class GenericController<E> {
 
+	
 	@Autowired
-	private FormatDateTime formatDateTime;
+	private ResponseDTO<E> resultDTO;
+	
+	@Autowired
+	private EventDTO eventDTO;
+	
+	@Autowired
+	private StatusDTO statusDTO;
 
-	@SuppressWarnings("unused")
 	@Autowired
-	private ResponseConstructor<Object> responseConstructor;
-
-	@Autowired
-	private ResultDTO<E> resultDTO;
-
-	@Autowired
-	private MessageRepository messageRepository;
+	private EventRepository eventRepository;
 
 	private String JSONBody;
 
@@ -43,15 +47,22 @@ public class GenericController<E> {
 
 	protected String msgError;
 
-	public Timestamp GetTimeStampNow() {
+	public Timestamp GetTimeStampNow() throws ParseException {
 
-		String strDateTime = formatDateTime.nowDateTime();
-		Timestamp stampDateTime = formatDateTime.timeStamp(strDateTime);
-
-		return stampDateTime;
+		SimpleDateFormat date = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
+		
+		String timeStamp = date.format(new Date());
+		System.out.println("Current Time Stamp: " + timeStamp);
+		
+		Date parsedDate = date.parse(timeStamp);
+		
+	    Timestamp convTimeStamp = new java.sql.Timestamp(parsedDate.getTime());
+		System.out.println("Converte Time Stamp: " + convTimeStamp);
+		
+		return convTimeStamp;
 	}
 
-	public String ResponseBuilder(String code, HttpStatus httpStatus, ArrayList<E> result, String msgError) {
+	public String BuilderResponse(String code, HttpStatus httpStatus, ArrayList<E> result, String msgError) {
 
 		try {
 
@@ -59,36 +70,60 @@ public class GenericController<E> {
 				throw new Exception("the code field cannot be empty, check!");
 			}
 
-			MessageModel messageModel = messageRepository.FindMessageByCode(code);
+			Event event = eventRepository.GetByCode(code);
 
-			if (messageModel == null) {
-				throw new Exception("return message not found.!");
+			if (event == null) {
+
+				// RESPONSE DEFAULT
+				
+				// event
+				eventDTO.setCode("1");
+				eventDTO.setDescription("standard event");
+				
+
+
+			} else {
+				
+				
+				//status
+				statusDTO.setCode(event.getStatus().getCode());
+				statusDTO.setDescription(event.getStatus().getDescription());
+				
+				//event
+				eventDTO.setCode(event.getCode());
+				eventDTO.setDescription(event.getDescription());
+				
+				eventDTO.setStatus(statusDTO);
+				
 			}
-			resultDTO.setCode(messageModel.getCode());
-			resultDTO.setDescription(messageModel.getDescription());
-			resultDTO.setHttpStatus(httpStatus);
+			
+			// result
+			
+			resultDTO.setEvent_log(eventDTO);
+			resultDTO.setLog_trace(msgError);
 			resultDTO.setResult(result);
-			resultDTO.setResulCount(resultDTO.getResulCount());
-			//resultDTO.setType(messageModel.getTypeMessage());
-			resultDTO.setTracemessage(msgError);
+			resultDTO.setResul_count(resultDTO.getResul_count(result));
+			
+			// convert to json
+			String JSONBody = json.toJson(resultDTO);
 
-			JSONBody = json.toJson(resultDTO);
-
+			return JSONBody;
 
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			
+			return null;
 		}
-		
-		return JSONBody;
+
 
 	}
 
 	public ArrayList<E> BuilderData(E obj, ArrayList<E> list) {
-		
+
 		list.add(obj);
-		
+
 		return list;
-		
+
 	}
 }

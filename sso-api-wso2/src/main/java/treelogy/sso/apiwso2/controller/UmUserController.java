@@ -14,18 +14,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import treelogy.sso.apiwso2.dto.UserDto;
-import treelogy.sso.apiwso2.model.MessageModel;
-import treelogy.sso.apiwso2.model.UmUserModel;
-import treelogy.sso.apiwso2.repository.UserWso2Repository;
+import treelogy.sso.apiwso2.model.Event;
+import treelogy.sso.apiwso2.model.UmUser;
+import treelogy.sso.apiwso2.repository.UmUserRepository;
 import treelogy.sso.apiwso2.util.CryptSalt;
 
 @SuppressWarnings("rawtypes")
 @RestController
 @RequestMapping(value = "/user")
-public class UserWso2Controller extends GenericController {
+public class UmUserController extends GenericController {
+
+	private static String ALREADYEXIST = "";
 
 	@Autowired
-	private UserWso2Repository userWso2Repository;
+	private UmUserRepository userWso2Repository;
 
 	@Autowired
 	private CryptSalt cryptSalt;
@@ -33,13 +35,17 @@ public class UserWso2Controller extends GenericController {
 	@Autowired
 	private UserDto userDto;
 
-	@GetMapping(value = "/search/{id}", produces = "application/json")
+	@Autowired
+	private UmUser umUserModel;
+
+	@GetMapping(value = "/search/{code}", produces = "application/json")
 	@SuppressWarnings({ "unchecked", "unused" })
-	public ResponseEntity<String> GetById(@PathVariable Long id) {
+	public ResponseEntity<String> GetById(@PathVariable String code) {
 
 		try {
 
-			UmUserModel user = userWso2Repository.findById(id).get();
+			
+			UmUser user = userWso2Repository.GetByCode(code);
 
 			userDto.setId(user.getUmUserId());
 			userDto.setUsername(user.getUmUserName());
@@ -53,11 +59,11 @@ public class UserWso2Controller extends GenericController {
 			if (user == null)
 				httpStatus = HttpStatus.NOT_FOUND;
 
-			result = BuilderData(userDto, new ArrayList<UmUserModel>());
+			result = BuilderData(userDto, new ArrayList<UmUser>());
 
 			// RESPONSE: builder response API Generic
 
-			String JSONBody = ResponseBuilder(respCode, httpStatus, result, new String());
+			String JSONBody = BuilderResponse(respCode, httpStatus, result, new String());
 			return new ResponseEntity<String>(JSONBody, httpStatus);
 
 		} catch (Exception e) {
@@ -73,7 +79,7 @@ public class UserWso2Controller extends GenericController {
 
 			// RESPONSE: builder response API Generic
 
-			String JSONBody = ResponseBuilder(respCode, httpStatus, new ArrayList<UmUserModel>(), msgError);
+			String JSONBody = BuilderResponse(respCode, httpStatus, new ArrayList<UmUser>(), msgError);
 
 			return new ResponseEntity<String>(JSONBody, httpStatus);
 
@@ -87,11 +93,11 @@ public class UserWso2Controller extends GenericController {
 
 		try {
 
-			Iterable<UmUserModel> users = userWso2Repository.findAll();
+			Iterable<UmUser> users = userWso2Repository.findAll();
 
 			List<UserDto> usersDto = new ArrayList<UserDto>();
 
-			for (UmUserModel user : users) {
+			for (UmUser user : users) {
 
 				UserDto userDto = new UserDto();
 
@@ -105,7 +111,7 @@ public class UserWso2Controller extends GenericController {
 
 			httpStatus = HttpStatus.CREATED;
 			respCode = "1";
-			
+
 			ArrayList<UserDto> resultList = new ArrayList<UserDto>();
 
 			for (UserDto userDTO : usersDto) {
@@ -115,7 +121,7 @@ public class UserWso2Controller extends GenericController {
 
 			// RESPONSE: builder response API Generic
 
-			String JSONBody = ResponseBuilder(respCode, httpStatus, result, new String());
+			String JSONBody = BuilderResponse(respCode, httpStatus, result, new String());
 			return new ResponseEntity<String>(JSONBody, httpStatus);
 
 		} catch (Exception e) {
@@ -131,7 +137,7 @@ public class UserWso2Controller extends GenericController {
 
 			// RESPONSE: builder response API Generic
 
-			String JSONBody = ResponseBuilder(respCode, httpStatus, new ArrayList<UmUserModel>(), msgError);
+			String JSONBody = BuilderResponse(respCode, httpStatus, new ArrayList<UmUser>(), msgError);
 
 			return new ResponseEntity<String>(JSONBody, httpStatus);
 
@@ -141,15 +147,22 @@ public class UserWso2Controller extends GenericController {
 
 	@SuppressWarnings("unchecked")
 	@PostMapping(value = "/", produces = "application/json")
-	public ResponseEntity<String> Post(@RequestBody UmUserModel user) throws Exception {
+	public ResponseEntity<String> Post(@RequestBody UserDto userDto) throws Exception {
 
 		try {
 
-			user.setUmChangedTime(GetTimeStampNow());
-			user.setUmUserPassword(cryptSalt.Encrypt(user.getUmUserPassword()));
+			UmUser userExists = userWso2Repository.GetByCode(userDto.getId());
 
-			user.setUmChangedTime(GetTimeStampNow());
-			UmUserModel userSave = userWso2Repository.save(user);
+			if (userExists != null) {
+				throw new Exception(ALREADYEXIST);
+			}
+			umUserModel.setUmChangedTime(GetTimeStampNow());
+			umUserModel.setUmUserPassword(cryptSalt.Encrypt(userDto.getPassword()));
+			umUserModel.setUmUserId(userDto.getId());
+			umUserModel.setUmUserName(userDto.getUsername());
+			umUserModel.setUmTenantId(-1234);
+
+			UmUser userSave = userWso2Repository.save(umUserModel);
 
 			if (userSave == null) {
 
@@ -160,27 +173,34 @@ public class UserWso2Controller extends GenericController {
 
 			httpStatus = HttpStatus.CREATED;
 			respCode = "1";
-			result = BuilderData(userSave, new ArrayList<UmUserModel>());
+			result = BuilderData(userSave, new ArrayList<UmUser>());
 
 			// RESPONSE: builder response API Generic
 
-			String JSONBody = ResponseBuilder(respCode, httpStatus, result, new String());
+			String JSONBody = BuilderResponse(respCode, httpStatus, result, new String());
 			return new ResponseEntity<String>(JSONBody, httpStatus);
 
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-
 			msgError = e.getMessage();
-
+			
 			// RETORN ERROR: assignment of success return values.
 
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			respCode = "2";
 
+			// RESPONSE: Exception Validations.
+			
+			if (msgError.toUpperCase().contains(ALREADYEXIST)) {
+
+				httpStatus = HttpStatus.BAD_REQUEST;
+				respCode = "3";
+			}
+
 			// RESPONSE: builder response API Generic
 
-			String JSONBody = ResponseBuilder(respCode, httpStatus, new ArrayList<UmUserModel>(), msgError);
+			String JSONBody = BuilderResponse(respCode, httpStatus, new ArrayList<UmUser>(), msgError);
 
 			return new ResponseEntity<String>(JSONBody, httpStatus);
 
