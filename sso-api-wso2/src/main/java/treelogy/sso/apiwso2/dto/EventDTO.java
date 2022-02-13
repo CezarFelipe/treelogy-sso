@@ -22,6 +22,10 @@ public class EventDTO {
 	@NotNull(message = "status field is required")
 	@JsonProperty("status")
 	private StatusDTO status;
+	
+
+	@JsonProperty("active")
+	private Boolean is_active;
 
 	public String getCode() {
 		return code;
@@ -45,6 +49,14 @@ public class EventDTO {
 
 	public void setStatus(StatusDTO status) {
 		this.status = status;
+	}
+
+	public Boolean getIs_active() {
+		return is_active;
+	}
+
+	public void setIs_active(Boolean is_active) {
+		this.is_active = is_active;
 	}
 	
 	

@@ -73,7 +73,9 @@ public class EventController extends GenericController {
 
 			eventDTO.setCode(event.getCode());
 			eventDTO.setDescription(event.getDescription());
+			eventDTO.setIs_active(event.getActive());
 			eventDTO.setStatus(statusDTO);
+			
 
 			// RETORN SUCESS: assignment of success return values.
 
@@ -143,6 +145,7 @@ public class EventController extends GenericController {
 
 				eventDTO.setCode(event.getCode());
 				eventDTO.setDescription(event.getDescription());
+				eventDTO.setIs_active(event.getActive());
 				eventDTO.setStatus(statusDTO);
 
 				eventDTOs.add(eventDTO);
@@ -355,10 +358,12 @@ public class EventController extends GenericController {
 
 				throw new Exception("code " + code + NOTFOUND);
 			}
+			
 			// logical exclusion
-
-			eventRepository.InactivateByCode(false, code);
-
+			event.setActive(false);
+			Event eventSave =eventRepository.save(event);
+			
+						
 			// RETORN SUCESS: assignment of success return values.
 
 			httpStatus = HttpStatus.OK;

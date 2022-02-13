@@ -70,7 +70,7 @@ public class GenericController<E> {
 				throw new Exception("the code field cannot be empty, check!");
 			}
 
-			Event event = eventRepository.GetByCode(code);
+			Event event = eventRepository.GetByCodeActive(true, code);
 
 			if (event == null) {
 
@@ -79,9 +79,8 @@ public class GenericController<E> {
 				// event
 				eventDTO.setCode("1");
 				eventDTO.setDescription("standard event");
+				eventDTO.setIs_active(true);
 				
-
-
 			} else {
 				
 				

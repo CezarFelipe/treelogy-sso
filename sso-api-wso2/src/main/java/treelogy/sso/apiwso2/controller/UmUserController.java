@@ -3,6 +3,8 @@ package treelogy.sso.apiwso2.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import treelogy.sso.apiwso2.dto.UserDto;
-import treelogy.sso.apiwso2.model.Event;
+
 import treelogy.sso.apiwso2.model.UmUser;
 import treelogy.sso.apiwso2.repository.UmUserRepository;
 import treelogy.sso.apiwso2.util.CryptSalt;
+
 
 @SuppressWarnings("rawtypes")
 @RestController
@@ -37,7 +40,9 @@ public class UmUserController extends GenericController {
 
 	@Autowired
 	private UmUser umUserModel;
-
+	
+	private Logger logger = LoggerFactory.getLogger(UmUserController.class);
+	
 	@GetMapping(value = "/search/{code}", produces = "application/json")
 	@SuppressWarnings({ "unchecked", "unused" })
 	public ResponseEntity<String> GetById(@PathVariable String code) {

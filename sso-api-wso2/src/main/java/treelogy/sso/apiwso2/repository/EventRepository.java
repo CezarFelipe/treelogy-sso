@@ -14,7 +14,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	@Query("SELECT u FROM Event u WHERE u.code = ?1")
 	Event GetByCode(String code);
 	
-	@Query("UPDATE Event SET active=?1  WHERE code = ?2")
-	Event InactivateByCode(Boolean active, String code);
+	@Query("SELECT u FROM Event u WHERE u.active = ?1 and u.code = ?2")
+	Event GetByCodeActive(Boolean active, String code);
 		
 }
