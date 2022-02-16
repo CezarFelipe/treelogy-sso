@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 public class ResponseDTO<E> {
 		
-	private ArrayList<E> result;
+	private ArrayList<?> result;
 	
 	private Integer resul_count;
 	
@@ -21,15 +21,15 @@ public class ResponseDTO<E> {
 
 	private EventDTO event_log;
 
-	public ArrayList<E> getResult() {
+	public ArrayList<?> getResult() {
 		return result;
 	}
 
-	public void setResult(ArrayList<E> result) {
+	public void setResult(ArrayList<?> result) {
 		this.result = result;
 	}
 
-	public Integer getResul_count(ArrayList<E> result) {
+	public Integer getResul_count(ArrayList<?> result) {
 		
 		return result.size();
 	}

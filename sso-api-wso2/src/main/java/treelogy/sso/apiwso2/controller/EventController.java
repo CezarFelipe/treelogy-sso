@@ -60,14 +60,15 @@ public class EventController extends GenericController {
 			if (code.isEmpty() || code == null) {
 				throw new Exception(REQUIRFIELD + "code");
 			}
-
+			System.out.println("code: "+code);
+			
 			Event event = eventRepository.GetByCode(code);
-
+				
 			if (event == null) {
 
 				throw new Exception("code " + code + NOTFOUND);
 			}
-
+			
 			statusDTO.setCode(event.getCode());
 			statusDTO.setDescription(event.getDescription());
 
@@ -81,7 +82,8 @@ public class EventController extends GenericController {
 
 			httpStatus = HttpStatus.OK;
 			respCode = "1";
-
+			
+			ArrayList<Event> result =  new ArrayList<>();
 			result = BuilderData(eventDTO, new ArrayList<Event>());
 
 			// RESPONSE: builder response API Generic
@@ -99,7 +101,7 @@ public class EventController extends GenericController {
 			// RETORN ERROR: assignment of success return values.
 
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			respCode = "2";
+			respCode = "3";
 
 			// RESPONSE: Exception Validations.
 			System.out.println(msgError);
@@ -174,7 +176,7 @@ public class EventController extends GenericController {
 			// RETORN ERROR: assignment of success return values.
 
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			respCode = "2";
+			respCode = "3";
 
 			// RESPONSE: Exception Validations.
 			System.out.println(msgError);
@@ -182,7 +184,7 @@ public class EventController extends GenericController {
 			if (msgError.contains(NOTFOUND)) {
 
 				httpStatus = HttpStatus.NOT_FOUND;
-				respCode = "3";
+				respCode = "2";
 			}
 			// RESPONSE: builder response API Generic
 
@@ -238,14 +240,14 @@ public class EventController extends GenericController {
 			// RETORN ERROR: assignment of success return values.
 
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			respCode = "2";
+			respCode = "3";
 
 			// RESPONSE: Exception Validations.
 
 			if (msgError.toUpperCase().contains(ERRORSAVE)) {
 
 				httpStatus = HttpStatus.BAD_REQUEST;
-				respCode = "3";
+				respCode = "2";
 			} else if (msgError.toUpperCase().contains(NOTFOUND)) {
 
 				httpStatus = HttpStatus.NOT_FOUND;
@@ -318,7 +320,7 @@ public class EventController extends GenericController {
 			// RETORN ERROR: assignment of success return values.
 
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			respCode = "2";
+			respCode = "3";
 
 			// RESPONSE: Exception Validations.
 			System.out.println(msgError);
@@ -326,7 +328,7 @@ public class EventController extends GenericController {
 			if (msgError.contains(ERRORSAVE)) {
 
 				httpStatus = HttpStatus.BAD_REQUEST;
-				respCode = "3";
+				respCode = "2";
 			} else if (msgError.contains(NOTFOUND)) {
 
 				httpStatus = HttpStatus.NOT_FOUND;
@@ -361,13 +363,13 @@ public class EventController extends GenericController {
 			
 			// logical exclusion
 			event.setActive(false);
-			Event eventSave =eventRepository.save(event);
+			eventRepository.save(event);
 			
 						
 			// RETORN SUCESS: assignment of success return values.
 
 			httpStatus = HttpStatus.OK;
-			respCode = "3";
+			respCode = "1";
 
 			// RESPONSE: builder response API Generic
 

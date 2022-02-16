@@ -29,11 +29,11 @@ public class UmUser{
 	@Column(unique = true)
 	private Long UmId;
 	
-	@JsonProperty("id")
 	private String UmUserId;
 	
 	@NotNull(message = "Username field is required")
 	@JsonProperty("username")
+	@Column(unique = true)
 	private String UmUserName;
 	
 	@NotNull(message = "Password field is required")

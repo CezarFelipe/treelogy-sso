@@ -1,5 +1,7 @@
 package treelogy.sso.apiwso2.dto;
 
+import java.sql.Timestamp;
+
 import javax.validation.constraints.NotNull;
 
 import org.springframework.stereotype.Component;
@@ -7,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserDto {
 	
-	@NotNull(message = "id field is required")
-	private String id;
+	@NotNull(message = "code field is required")
+	private String code;
 	
 	@NotNull(message = "username field is required")
 	private String username;
@@ -16,14 +18,18 @@ public class UserDto {
 	@NotNull(message = "password field is required")
 	private String password;
 	
+	@NotNull(message = "changed_time field is required")
+	private Timestamp changed_time;
+	
 	private Boolean require_change;
 
-	public String getId() {
-		return id;
+	
+	public String getCode() {
+		return code;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getUsername() {
@@ -48,6 +54,14 @@ public class UserDto {
 
 	public void setRequire_change(Boolean require_change) {
 		this.require_change = require_change;
+	}
+
+	public Timestamp getChanged_time() {
+		return changed_time;
+	}
+
+	public void setChanged_time(Timestamp changed_time) {
+		this.changed_time = changed_time;
 	}
 	
 	
