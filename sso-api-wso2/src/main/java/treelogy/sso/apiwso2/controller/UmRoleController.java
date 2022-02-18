@@ -18,68 +18,59 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import treelogy.sso.apiwso2.dto.EventDTO;
+import treelogy.sso.apiwso2.dto.RoleDTO;
 import treelogy.sso.apiwso2.dto.StatusDTO;
 import treelogy.sso.apiwso2.model.Event;
 import treelogy.sso.apiwso2.model.Status;
+import treelogy.sso.apiwso2.model.UmRole;
 import treelogy.sso.apiwso2.model.UmUser;
 import treelogy.sso.apiwso2.repository.EventRepository;
 import treelogy.sso.apiwso2.repository.StatusRepository;
+import treelogy.sso.apiwso2.repository.UmRoleRepository;
 import treelogy.sso.apiwso2.enumtype.ConstantException;
-
 
 @SuppressWarnings("rawtypes")
 @RestController
-@RequestMapping(value = "/event")
-public class EventController extends GenericController {
+@RequestMapping(value = "/role")
+public class UmRoleController extends GenericController {
 
 	@Autowired
-	private EventRepository eventRepository;
+	private UmRoleRepository umRoleRepository;
 
-	@Autowired
-	private StatusRepository statusRepository;
+	private Logger logger = LoggerFactory.getLogger(UmRoleController.class);
 
-	@Autowired
-	private EventDTO eventDTO;
-
-	@Autowired
-	private StatusDTO statusDTO;
-
-	private Logger logger = LoggerFactory.getLogger(EventController.class);
-	
 	@GetMapping(value = "/search/{code}", produces = "application/json")
 	@SuppressWarnings("unchecked")
-	public ResponseEntity<String> GetByCode(@PathVariable String code) {
+	public ResponseEntity<String> GetByCode(@PathVariable Long code) {
 
 		try {
 
-			if (code.isEmpty() || code == null) {
+			if (code == null) {
 				throw new Exception(ConstantException.REQUIRFIELD + "code");
 			}
-			System.out.println("code: "+code);
-			
-			Event event = eventRepository.GetByCode(code);
-				
-			if (event == null) {
+
+			System.out.println("code: " + code);
+
+			UmRole umRole = umRoleRepository.GetByCode(code);
+
+			if (umRole == null) {
 
 				throw new Exception("code " + code + ConstantException.NOTFOUND);
 			}
-			
-			statusDTO.setCode(event.getCode());
-			statusDTO.setDescription(event.getDescription());
 
-			eventDTO.setCode(event.getCode());
-			eventDTO.setDescription(event.getDescription());
-			eventDTO.setIs_active(event.getActive());
-			eventDTO.setStatus(statusDTO);
-			
+			RoleDTO roleDTO = new RoleDTO();
 
+
+			roleDTO.setDescription(umRole.getUmRoleName());
+			roleDTO.setCode(umRole.getUmId());
+			
 			// RETORN SUCESS: assignment of success return values.
 
 			httpStatus = HttpStatus.OK;
 			respCode = "1";
-			
-			ArrayList<Event> result =  new ArrayList<>();
-			result = BuilderData(eventDTO, new ArrayList<Event>());
+
+			ArrayList<RoleDTO> result = new ArrayList<>();
+			result = BuilderData(roleDTO, new ArrayList<RoleDTO>());
 
 			// RESPONSE: builder response API Generic
 
@@ -119,9 +110,10 @@ public class EventController extends GenericController {
 	public ResponseEntity<String> GetList() {
 
 		try {
-			List<Event> events = eventRepository.findAll();
 
-			if (events.size() <= 0) {
+			List<UmRole> umRoles = umRoleRepository.findAll();
+
+			if (umRoles.size() <= 0) {
 
 				throw new Exception(ConstantException.NOTFOUND);
 			}
@@ -130,30 +122,24 @@ public class EventController extends GenericController {
 			httpStatus = HttpStatus.OK;
 			respCode = "1";
 
-			ArrayList<EventDTO> eventDTOs = new ArrayList<>();
+			ArrayList<RoleDTO> roleDTOs = new ArrayList<>();
 
-			for (Event event : events) {
+			for (UmRole role : umRoles) {
 
-				StatusDTO statusDTO = new StatusDTO();
-				EventDTO eventDTO = new EventDTO();
+				RoleDTO roleDTO = new RoleDTO();
 
-				statusDTO.setCode(event.getStatus().getCode());
-				statusDTO.setDescription(event.getStatus().getDescription());
+				roleDTO.setDescription(role.getUmRoleName());
+				roleDTO.setCode(role.getUmId());
 
-				eventDTO.setCode(event.getCode());
-				eventDTO.setDescription(event.getDescription());
-				eventDTO.setIs_active(event.getActive());
-				eventDTO.setStatus(statusDTO);
-
-				eventDTOs.add(eventDTO);
+				roleDTOs.add(roleDTO);
 
 			}
 
-			ArrayList<EventDTO> resultEventDTO = new ArrayList<>();
+			ArrayList<RoleDTO> resultRoleDTO = new ArrayList<>();
 
-			for (EventDTO eventDTO : eventDTOs) {
+			for (RoleDTO roleDTO : roleDTOs) {
 
-				result = BuilderData(eventDTO, resultEventDTO);
+				result = BuilderData(roleDTO, resultRoleDTO);
 			}
 
 			// RESPONSE: builder response API Generic
@@ -192,39 +178,44 @@ public class EventController extends GenericController {
 
 	@PostMapping(value = "/", produces = "application/json")
 	@SuppressWarnings("unchecked")
-	public ResponseEntity<String> Post(@RequestBody Event eventBody) {
+	public ResponseEntity<String> Post(@RequestBody RoleDTO roleBody) {
 
 		try {
 
-			Status status = statusRepository.GetByCodeIsActive(true, eventBody.getStatus().getCode());
+			if (roleBody.getDescription().isEmpty() || roleBody.getDescription() == null) {
+				throw new Exception(ConstantException.REQUIRFIELD + "name");
+			}
 
-			if (status == null) {
+			UmRole umRole = umRoleRepository.GetByCode(roleBody.getCode());
 
-				throw new Exception("status " + eventBody.getStatus().getCode() + ConstantException.NOTFOUND);
+			if (umRole != null) {
+
+				throw new Exception("Role " + roleBody.getCode() + ConstantException.NOTFOUND);
 			}
 			
-			Event eventExist = eventRepository.GetByCode(eventBody.getCode());
-
-			if (eventExist != null) {
-				throw new Exception(ConstantException.ALREADYEXIST);
-			}
+			UmRole newUmRole = new UmRole();
+	
+			newUmRole.setUmRoleName(roleBody.getDescription());
+			newUmRole.setUmTenantId(-1234);
 			
-			eventBody.setStatus(status);
-			eventBody.setCreatedAt(GetTimeStampNow());
-			eventBody.setActive(true);
-			Event eventSave = eventRepository.save(eventBody);
+			UmRole umRoleSave = umRoleRepository.save(newUmRole);
 
-			if (eventSave == null) {
+			if (umRoleSave == null) {
 
 				throw new Exception(ConstantException.ERRORSAVE);
 			}
 
 			// RETORN SUCESS: assignment of success return values.
 
-			httpStatus = HttpStatus.OK;
+			httpStatus = HttpStatus.CREATED;
 			respCode = "1";
+			
+			RoleDTO roleDTO = new RoleDTO();
 
-			result = BuilderData(eventSave, new ArrayList<Event>());
+			roleDTO.setDescription(umRoleSave.getUmRoleName());
+			roleDTO.setCode(umRoleSave.getUmId());
+			
+			result = BuilderData(roleDTO, new ArrayList<RoleDTO>());
 
 			// RESPONSE: builder response API Generic
 
@@ -267,44 +258,40 @@ public class EventController extends GenericController {
 
 	@PutMapping(value = "/{code}", produces = "application/json")
 	@SuppressWarnings("unchecked")
-	public ResponseEntity<String> Update(@PathVariable String code, @RequestBody Event eventBody) {
+	public ResponseEntity<String> Update(@PathVariable Long code, @RequestBody RoleDTO roleBody) {
 
 		try {
-			if (code.isEmpty() || code == null) {
+			if (code == null) {
 				throw new Exception(ConstantException.REQUIRFIELD + "code");
 			}
 
-			Event eventSelect = eventRepository.GetByCode(code);
+			UmRole umRole = umRoleRepository.GetByCode(code);
 
-			if (eventSelect == null) {
+			if (umRole == null) {
 
 				throw new Exception("code " + code + ConstantException.NOTFOUND);
 			}
 
-			eventBody.setId(eventSelect.getId());
+			umRole.setUmRoleName(roleBody.getDescription());
 
-			Status status = statusRepository.GetByCodeIsActive(true, eventBody.getStatus().getCode());
+			UmRole umRoleUpdate = umRoleRepository.save(umRole);
 
-			if (status == null) {
-
-				throw new Exception("status " + eventBody.getStatus().getCode() + ConstantException.NOTFOUND);
-			}
-
-			eventBody.setStatus(status);
-
-			Event eventUpdate = eventRepository.save(eventBody);
-
-			if (eventUpdate == null) {
+			if (umRoleUpdate == null) {
 
 				throw new Exception(ConstantException.ERRORSAVE);
 			}
-
+			
+			RoleDTO roleDTO = new RoleDTO();
+			
+			roleDTO.setCode(umRoleUpdate.getUmId());
+			roleDTO.setDescription(umRoleUpdate.getUmRoleName());
+			
 			// RETORN SUCESS: assignment of success return values.
 
 			httpStatus = HttpStatus.OK;
 			respCode = "1";
 
-			result = BuilderData(eventUpdate, new ArrayList<Event>());
+			result = BuilderData(roleDTO, new ArrayList<RoleDTO>());
 
 			// RESPONSE: builder response API Generic
 
@@ -330,72 +317,6 @@ public class EventController extends GenericController {
 
 				httpStatus = HttpStatus.BAD_REQUEST;
 				respCode = "2";
-			} else if (msgError.contains(ConstantException.NOTFOUND)) {
-
-				httpStatus = HttpStatus.NOT_FOUND;
-				respCode = "2";
-
-			}
-			// RESPONSE: builder response API Generic
-
-			String JSONBody = BuilderResponse(respCode, httpStatus, new ArrayList<Event>(), msgError);
-
-			return new ResponseEntity<String>(JSONBody, httpStatus);
-		}
-
-	}
-
-	@DeleteMapping(value = "/{code}", produces = "application/json")
-	@SuppressWarnings("unchecked")
-	public ResponseEntity<String> Delete(@PathVariable String code) {
-
-		try {
-
-			if (code.isEmpty() || code == null) {
-				throw new Exception(ConstantException.REQUIRFIELD + "code");
-			}
-
-			Event event = eventRepository.GetByCode(code);
-
-			if (event == null) {
-
-				throw new Exception("code " + code + ConstantException.NOTFOUND);
-			}
-			
-			// logical exclusion
-			event.setActive(false);
-			eventRepository.save(event);
-			
-						
-			// RETORN SUCESS: assignment of success return values.
-
-			httpStatus = HttpStatus.OK;
-			respCode = "1";
-
-			// RESPONSE: builder response API Generic
-
-			String JSONBody = BuilderResponse(respCode, httpStatus, new ArrayList<Event>(), new String());
-			return new ResponseEntity<String>(JSONBody, httpStatus);
-
-		} catch (Exception e) {
-
-			// TODO: handle exception
-			e.printStackTrace();
-
-			msgError = e.getMessage();
-
-			// RETORN ERROR: assignment of success return values.
-
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			respCode = "2";
-
-			// RESPONSE: Exception Validations.
-			System.out.println(msgError);
-
-			if (msgError.contains(ConstantException.ERRORSAVE)) {
-
-				httpStatus = HttpStatus.BAD_REQUEST;
-				respCode = "3";
 			} else if (msgError.contains(ConstantException.NOTFOUND)) {
 
 				httpStatus = HttpStatus.NOT_FOUND;

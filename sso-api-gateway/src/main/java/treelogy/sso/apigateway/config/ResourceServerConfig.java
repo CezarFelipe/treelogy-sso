@@ -26,11 +26,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 	@Autowired
 	private JwtTokenStore jwtTokenStore;
 	
-	private static final String[] PUBLIC = {"/sso-oauth/oauth/token"};
+	private static final String[] PUBLIC = {"/sso-oauth/oauth/token", "/actuator/**"};
 	
 	private static final String[] OPERATOR =  {"/sso-administrator/**"};
 		
-	private String[] ADMIN = {"/sso-user/**", "/actuator/**","/sso-oauth/actuator/**","/sso-api-wso2/**"};
+	private String[] ADMIN = {"/sso-user/**", "/sso-oauth/actuator/**","/sso-api-wso2/**"};
 	
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {

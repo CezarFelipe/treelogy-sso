@@ -1,0 +1,14 @@
+version: '3.2'
+networks:
+  treelogy-sso-net:
+    driver:
+      bridge
+
+services:
+  wso2:
+    image: wso2/wso2is:latest
+    container_name: treelogy-sso-wso2
+    ports:
+    - 9443:9443
+    networks:
+      - treelogy-sso-net
