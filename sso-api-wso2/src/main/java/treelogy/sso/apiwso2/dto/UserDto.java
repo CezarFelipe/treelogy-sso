@@ -23,6 +23,7 @@ public class UserDto {
 	
 	private Boolean require_change;
 
+	private RoleDTO role;
 	
 	public String getCode() {
 		return code;
@@ -62,6 +63,14 @@ public class UserDto {
 
 	public void setChanged_time(Timestamp changed_time) {
 		this.changed_time = changed_time;
+	}
+
+	public RoleDTO getRoleDTO() {
+		return role;
+	}
+
+	public void setRoleDTO(RoleDTO roleDTO) {
+		this.role = roleDTO;
 	}
 	
 	

@@ -17,9 +17,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import treelogy.sso.apiwso2.dto.AssignDto;
+import treelogy.sso.apiwso2.dto.RoleDTO;
 import treelogy.sso.apiwso2.dto.UserDto;
 import treelogy.sso.apiwso2.model.Event;
+import treelogy.sso.apiwso2.model.UmRole;
 import treelogy.sso.apiwso2.model.UmUser;
+import treelogy.sso.apiwso2.model.UmUserRole;
+import treelogy.sso.apiwso2.repository.UmRoleRepository;
 import treelogy.sso.apiwso2.repository.UmUserRepository;
 import treelogy.sso.apiwso2.util.CryptSalt;
 
@@ -38,6 +43,9 @@ public class UmUserController extends GenericController {
 
 	@Autowired
 	private UmUserRepository userWso2Repository;
+
+	@Autowired
+	private UmRoleRepository umRoleRepository;
 
 	@Autowired
 	private CryptSalt cryptSalt;
@@ -66,9 +74,26 @@ public class UmUserController extends GenericController {
 
 				throw new Exception("code " + code + NOTFOUND);
 			}
+
+			UserDto userDto = new UserDto();
+
 			userDto.setCode(user.getUmUserId());
 			userDto.setUsername(user.getUmUserName());
 			userDto.setPassword(user.getUmUserPassword());
+
+			UmUserRole umUserRole = userWso2Repository.GetAssignByUser(user);
+
+			if (umUserRole != null) {
+
+				UmRole role = umRoleRepository.findById(umUserRole.getUmRole().getUmId()).get();
+
+				RoleDTO roleDTO = new RoleDTO();
+
+				roleDTO.setCode(role.getUmId());
+				roleDTO.setDescription(role.getUmRoleName());
+
+				userDto.setRoleDTO(roleDTO);
+			}
 
 			result = BuilderData(userDto, new ArrayList<UmUser>());
 
@@ -134,6 +159,21 @@ public class UmUserController extends GenericController {
 				userDto.setCode(user.getUmUserId());
 				userDto.setPassword(user.getUmUserPassword());
 				userDto.setUsername(user.getUmUserName());
+
+				UmUserRole umUserRole = userWso2Repository.GetAssignByUser(user);
+
+				if (umUserRole != null) {
+
+					UmRole role = umRoleRepository.findById(umUserRole.getUmRole().getUmId()).get();
+
+					RoleDTO roleDTO = new RoleDTO();
+
+					roleDTO.setCode(role.getUmId());
+					roleDTO.setDescription(role.getUmRoleName());
+
+					userDto.setRoleDTO(roleDTO);
+				}
+
 				usersDto.add(userDto);
 			}
 
@@ -197,9 +237,9 @@ public class UmUserController extends GenericController {
 			if (userExists != null) {
 				throw new Exception(ALREADYEXIST);
 			}
-			
+
 			UmUser umUserModel = new UmUser();
-			
+
 			umUserModel.setUmChangedTime(GetTimeStampNow());
 			umUserModel.setUmUserPassword(cryptSalt.Encrypt(userDto.getPassword()));
 			umUserModel.setUmUserId(userDto.getCode());
@@ -355,8 +395,8 @@ public class UmUserController extends GenericController {
 
 				throw new Exception("code " + code + NOTFOUND);
 			}
-			
-		    userWso2Repository.deleteById(umUser.getUmId());
+
+			userWso2Repository.deleteById(umUser.getUmId());
 
 			// RETORN SUCESS: assignment of success return values.
 
@@ -366,6 +406,90 @@ public class UmUserController extends GenericController {
 			// RESPONSE: builder response API Generic
 
 			String JSONBody = BuilderResponse(respCode, httpStatus, new ArrayList<Event>(), new String());
+			return new ResponseEntity<String>(JSONBody, httpStatus);
+
+		} catch (Exception e) {
+
+			// TODO: handle exception
+			e.printStackTrace();
+
+			msgError = e.getMessage();
+
+			// RETORN ERROR: assignment of success return values.
+
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			respCode = "2";
+
+			// RESPONSE: Exception Validations.
+			System.out.println(msgError);
+
+			if (msgError.contains(ERRORSAVE)) {
+
+				httpStatus = HttpStatus.BAD_REQUEST;
+				respCode = "2";
+			} else if (msgError.contains(NOTFOUND)) {
+
+				httpStatus = HttpStatus.NOT_FOUND;
+				respCode = "2";
+
+			}
+			// RESPONSE: builder response API Generic
+
+			String JSONBody = BuilderResponse(respCode, httpStatus, new ArrayList<Event>(), msgError);
+
+			return new ResponseEntity<String>(JSONBody, httpStatus);
+		}
+
+	}
+
+	@PostMapping(value = "/assign/", produces = "application/json")
+	@SuppressWarnings("unchecked")
+	public ResponseEntity<String> AssignToUser(@RequestBody AssignDto assignDto) {
+
+		try {
+
+			if (assignDto.getRoleCode() == null) {
+				throw new Exception(REQUIRFIELD + "code role");
+			} else if (assignDto.getUserCode().isEmpty() || assignDto.getUserCode() == null) {
+				throw new Exception(REQUIRFIELD + "code user");
+			}
+
+			UmUser umUser = userWso2Repository.GetByCode(assignDto.getUserCode());
+
+			if (umUser == null) {
+
+				throw new Exception("code user" + assignDto.getUserCode() + NOTFOUND);
+			}
+
+			UmRole umRole = umRoleRepository.GetByCode(assignDto.getRoleCode());
+
+			if (umRole == null) {
+
+				throw new Exception("code role" + assignDto.getRoleCode() + NOTFOUND);
+			}
+
+			UmUserRole umUserRole = userWso2Repository.GetAssignByUser(umUser);
+
+			if (umUserRole != null) {
+				System.out.println("UPDATE");
+				Integer umUserRoleSave = userWso2Repository.AssignRoleToUserUpdate(umRole, umUser);
+				if (umUserRoleSave == null) {
+
+					throw new Exception(ERRORSAVE);
+				}
+			} else {
+				System.out.println("CREATE");
+				userWso2Repository.AssignRoleToUser(umRole.getUmId(), umUser.getUmId(), -1234);
+			}
+
+			// RETORN SUCESS: assignment of success return values.
+
+			httpStatus = HttpStatus.CREATED;
+			respCode = "1";
+
+			// RESPONSE: builder response API Generic
+
+			String JSONBody = BuilderResponse(respCode, httpStatus, new ArrayList<>(), new String());
 			return new ResponseEntity<String>(JSONBody, httpStatus);
 
 		} catch (Exception e) {
