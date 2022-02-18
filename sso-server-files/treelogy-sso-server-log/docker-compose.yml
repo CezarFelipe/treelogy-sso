@@ -1,9 +1,8 @@
 version: '3.2'
 networks:
-  treelogy-sso-net:
-    driver:
-      bridge
-
+  default:
+    external: true
+    name: treelogy-sso-net
 services:
   prometheus:
     image: prom/prometheus:latest
@@ -14,15 +13,11 @@ services:
     - --config.file=/treelogy-sso-server-log/prometheus.yml
     volumes:
     - ./prometheus.yml:/treelogy-sso-server-log/prometheus.yml
-    networks:
-      - treelogy-sso-net
   grafana:
     image: grafana/grafana:latest
     container_name: treelogy-sso-grafana
     ports:
     - 3000:3000
-    networks:
-      - treelogy-sso-net
     environment:
         - GF_SECURITY_ADMIN_PASSWORD=pass
     volumes:
@@ -34,7 +29,5 @@ services:
     container_name: treelogy-sso-zipkin
     ports:
     - 9411:9411
-    networks:
-      - treelogy-sso-net
 volumes:
     grafana_data: {}

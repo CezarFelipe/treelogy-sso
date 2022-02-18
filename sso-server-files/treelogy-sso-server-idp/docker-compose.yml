@@ -1,8 +1,8 @@
 version: '3.2'
 networks:
-  treelogy-sso-net:
-    driver:
-      bridge
+  default:
+    external: true
+    name: treelogy-sso-net
 
 services:
   wso2:
@@ -10,5 +10,3 @@ services:
     container_name: treelogy-sso-wso2
     ports:
     - 9443:9443
-    networks:
-      - treelogy-sso-net
