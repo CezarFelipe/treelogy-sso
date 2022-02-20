@@ -20,6 +20,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Component
 @Entity
 @Table(name = "um_user_role", uniqueConstraints = @UniqueConstraint(columnNames = "UmId", name = "um_id"))
@@ -40,6 +42,31 @@ public class UmUserRole {
 	@ManyToOne
 	@JoinColumn(name = "um_role_id", insertable = true, updatable = true, referencedColumnName = "UmId",unique = false)
 	private UmRole umRole;
+
+	@JsonProperty("is_read")
+	private Boolean IsRead;
+	
+	
+	@ManyToOne
+	@JsonProperty("situation")
+	private Situation situation;
+	
+	
+	public Situation getSituation() {
+		return situation;
+	}
+
+	public void setSituation(Situation situation) {
+		this.situation = situation;
+	}
+
+	public Boolean getIsRead() {
+		return IsRead;
+	}
+
+	public void setIsRead(Boolean isRead) {
+		IsRead = isRead;
+	}
 
 	public Long getUmId() {
 		return umId;

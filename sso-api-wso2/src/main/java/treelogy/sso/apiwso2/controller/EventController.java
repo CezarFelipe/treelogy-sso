@@ -44,6 +44,7 @@ public class EventController extends GenericController {
 	@Autowired
 	private StatusDTO statusDTO;
 
+	@SuppressWarnings("unused")
 	private Logger logger = LoggerFactory.getLogger(EventController.class);
 	
 	@GetMapping(value = "/search/{code}", produces = "application/json")

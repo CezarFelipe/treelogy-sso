@@ -51,15 +51,13 @@ public class UmUserController extends GenericController {
 	private CryptSalt cryptSalt;
 
 	@Autowired
-	private UserDto userDto;
-
-	@Autowired
 	private UmUser umUserModel;
 
+	@SuppressWarnings("unused")
 	private Logger logger = LoggerFactory.getLogger(UmUserController.class);
 
 	@GetMapping(value = "/search/{code}", produces = "application/json")
-	@SuppressWarnings({ "unchecked", "unused" })
+	@SuppressWarnings({ "unchecked" })
 	public ResponseEntity<String> GetByCode(@PathVariable String code) {
 
 		try {
@@ -524,5 +522,5 @@ public class UmUserController extends GenericController {
 			return new ResponseEntity<String>(JSONBody, httpStatus);
 		}
 
-	}
+	}	
 }

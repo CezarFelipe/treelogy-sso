@@ -11,12 +11,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 @MappedSuperclass
 public abstract class Generic {
 
-    @Column(updatable = false)
-    @CreationTimestamp
-    private Timestamp createdAt;
-    
-    @UpdateTimestamp
-    private Timestamp updatedAt;
+	@Column(updatable = false)
+	@CreationTimestamp
+	private Timestamp createdAt;
+
+	@UpdateTimestamp
+	private Timestamp updatedAt;
 
 	public Timestamp getCreatedAt() {
 		return createdAt;
@@ -33,7 +33,5 @@ public abstract class Generic {
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-    
-    
 
 }

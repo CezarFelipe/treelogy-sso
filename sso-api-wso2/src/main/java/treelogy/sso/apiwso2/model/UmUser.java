@@ -8,11 +8,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -53,6 +57,13 @@ public class UmUser{
 	@JsonProperty("tenant")
 	private Integer UmTenantId;
 
+	
+	@JsonProperty("is_read")
+	private Boolean IsRead;
+	
+	@ManyToOne
+	@JsonProperty("situation")
+	private Situation situation;
 	
 	public Long getUmId() {
 		return UmId;
@@ -117,6 +128,22 @@ public class UmUser{
 
 	public void setUmTenantId(Integer umTenantId) {
 		UmTenantId = umTenantId;
+	}
+
+	public Boolean getIsRead() {
+		return IsRead;
+	}
+
+	public void setIsRead(Boolean isRead) {
+		IsRead = isRead;
+	}
+
+	public Situation getSituation() {
+		return situation;
+	}
+
+	public void setSituation(Situation situation) {
+		this.situation = situation;
 	}
 	
 	

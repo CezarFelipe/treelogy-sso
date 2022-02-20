@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -40,6 +41,31 @@ public class UmRole{
 	
 	@JsonProperty("um_shared_role")
 	private Boolean UmSharedRole;
+	
+	@JsonProperty("is_read")
+	private Boolean IsRead;
+	
+	@ManyToOne
+	@JsonProperty("situation")
+	private Situation situation;
+
+	
+	
+	public Situation getSituation() {
+		return situation;
+	}
+
+	public void setSituation(Situation situation) {
+		this.situation = situation;
+	}
+
+	public Boolean getIsRead() {
+		return IsRead;
+	}
+
+	public void setIsRead(Boolean isRead) {
+		IsRead = isRead;
+	}
 
 	public Long getUmId() {
 		return UmId;

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import treelogy.sso.apiwso2.model.Situation;
 import treelogy.sso.apiwso2.model.UmRole;
 import treelogy.sso.apiwso2.model.UmUser;
 import treelogy.sso.apiwso2.model.UmUserRole;
@@ -28,4 +29,19 @@ public interface UmUserRepository extends JpaRepository<UmUser, Long> {
 	@Modifying
 	@Query("update UmUserRole u set u.umRole = ?1 where u.umUser = ?2")
 	Integer AssignRoleToUserUpdate(UmRole role, UmUser user);
+	
+	@Query("SELECT u FROM UmUser u WHERE u.IsRead = true")
+	Iterable<UmUser>GetUserByIsRead();
+	
+	@Query("SELECT u FROM UmUser u WHERE u.situation = ?1")
+	Iterable<UmUser>GetUserBySituation(Situation situation);
+	
+	@Query("SELECT u FROM UmUserRole u WHERE u.IsRead = true")
+	Iterable<UmUserRole>GetRoleUserByIsRead();
+	
+	@Transactional
+	@Modifying
+	@Query("update UmUserRole u set u.situation = ?1 where u.umUser = ?2")
+	Integer AssignToUserUpdate(Situation situation, UmUser user);
+	
 }

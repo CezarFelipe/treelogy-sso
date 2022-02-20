@@ -26,15 +26,7 @@ public class GenericController<E> {
 	private ResponseDTO<E> resultDTO;
 	
 	@Autowired
-	private EventDTO eventDTO;
-	
-	@Autowired
-	private StatusDTO statusDTO;
-
-	@Autowired
 	private EventRepository eventRepository;
-
-	private String JSONBody;
 
 	@Autowired
 	private Gson json;
