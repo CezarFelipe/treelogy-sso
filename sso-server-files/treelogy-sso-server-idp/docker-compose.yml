@@ -10,3 +10,30 @@ services:
     container_name: treelogy-sso-wso2
     ports:
     - 9443:9443
+    links:
+      - db
+    depends_on:
+      - db
+  api-wso2:
+      build: ../../sso-api-wso2/
+      container_name: treelogy-sso-wso2-api
+      links:
+        - db
+      depends_on:
+        - db
+      extra_hosts:
+      - 'host.docker.internal:127.0.0.1'
+  db:
+    image: postgres:12-alpine
+    container_name: sso-wso2-db-user-pg12
+    hostname: postgres
+    restart: always
+    tty: true
+    ports:
+      - 5437:5432
+    volumes:
+      - ./.docker/dbdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=@sso@wso2
+      - POSTGRES_DB=db_sso_wso2-user
+      - POSTGRES_USER=wso2-server
