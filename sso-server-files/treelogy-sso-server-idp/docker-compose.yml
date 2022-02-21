@@ -5,7 +5,7 @@ networks:
     name: treelogy-sso-net
 
 services:
-  wso2:
+  treelogy-sso-wso2:
     image: wso2/wso2is:latest
     container_name: treelogy-sso-wso2
     ports:
@@ -14,18 +14,16 @@ services:
       - db
     depends_on:
       - db
-  api-wso2:
+  treelogy-sso-wso2-api:
       build: ../../sso-api-wso2/
       container_name: treelogy-sso-wso2-api
       links:
         - db
       depends_on:
         - db
-      extra_hosts:
-      - 'host.docker.internal:127.0.0.1'
-  db:
+  treelogy-sso-wso2-db-user-pg12:
     image: postgres:12-alpine
-    container_name: sso-wso2-db-user-pg12
+    container_name: treelogy-sso-wso2-db-user-pg12
     hostname: postgres
     restart: always
     tty: true

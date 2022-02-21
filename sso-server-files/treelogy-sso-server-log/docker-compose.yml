@@ -4,7 +4,7 @@ networks:
     external: true
     name: treelogy-sso-net
 services:
-  prometheus:
+  treelogy-sso-prometheus:
     image: prom/prometheus:latest
     container_name: treelogy-sso-prometheus
     ports:
@@ -13,7 +13,7 @@ services:
     - --config.file=/treelogy-sso-server-log/prometheus.yml
     volumes:
     - ./prometheus.yml:/treelogy-sso-server-log/prometheus.yml
-  grafana:
+  treelogy-sso-grafana:
     image: grafana/grafana:latest
     container_name: treelogy-sso-grafana
     ports:
@@ -24,7 +24,7 @@ services:
         - grafana_data:/var/lib/grafana
     depends_on:
         - prometheus
-  zipkin:
+  treelogy-sso-zipkin:
     image: openzipkin/zipkin:latest
     container_name: treelogy-sso-zipkin
     ports:
