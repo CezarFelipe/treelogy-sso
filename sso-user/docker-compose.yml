@@ -1,0 +1,28 @@
+version: '3.2'
+networks:
+  default:
+    external: true
+    name: treelogy-sso-net
+
+services:
+  treelogy-sso-user:
+    build: .
+    container_name: treelogy-sso-user
+    links:
+      - treelogy-sso-db-user-pg12
+    depends_on:
+      - treelogy-sso-db-user-pg12
+  treelogy-sso-db-user-pg12:
+    image: postgres:12-alpine
+    container_name: treelogy-sso-db-user-pg12
+    hostname: postgres
+    restart: always
+    tty: true
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.docker/dbdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=@sso@user
+      - POSTGRES_DB=db_sso_user
+      - POSTGRES_USER=sso-treelogy
