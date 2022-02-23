@@ -24,4 +24,4 @@ hs_err_pid*
 
 #volumes docker
 /sso-user/.docker/*
-/sso-server-files/treelogy-sso-server-idp/.dbdata/*
+/sso-server-files/sso-server-idp/.dbdata/*
