@@ -1,0 +1,14 @@
+version: '3.2'
+networks:
+  default:
+    external: true
+    name: treelogy-sso-net
+
+services:
+  treelogy-sso-rabbitmq:
+      image: rabbitmq:3.9.13-management-alpine
+      container_name: treelogy-sso-rabbitmq
+      restart: always
+      ports:
+      - 5762:5762
+      - 15672:15672

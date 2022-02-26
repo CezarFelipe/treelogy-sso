@@ -8,5 +8,6 @@ services:
   treelogy-sso-api-gateway:
       build: .
       container_name: treelogy-sso-api-gateway
+      restart: always
       ports:
       - 8080:8080

@@ -8,6 +8,7 @@ services:
   treelogy-sso-config-server:
       build: .
       container_name: treelogy-sso-config-server
+      restart: always
       ports:
       - 8888:8888
       environment:

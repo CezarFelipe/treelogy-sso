@@ -12,6 +12,7 @@ services:
       - treelogy-sso-db-user-pg12
     depends_on:
       - treelogy-sso-db-user-pg12
+    restart: always
   treelogy-sso-db-user-pg12:
     image: postgres:12-alpine
     container_name: treelogy-sso-db-user-pg12

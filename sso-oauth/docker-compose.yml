@@ -8,3 +8,4 @@ services:
   treelogy-sso-oauth:
     build: .
     container_name: treelogy-sso-oauth
+    restart: always

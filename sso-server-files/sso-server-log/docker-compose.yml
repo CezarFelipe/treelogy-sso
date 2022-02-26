@@ -6,6 +6,7 @@ networks:
 services:
   treelogy-sso-prometheus:
     image: prom/prometheus:latest
+    restart: always
     container_name: treelogy-sso-prometheus
     ports:
     - 9090:9090
@@ -16,6 +17,7 @@ services:
   treelogy-sso-grafana:
     image: grafana/grafana:latest
     container_name: treelogy-sso-grafana
+    restart: always
     ports:
     - 3000:3000
     environment:
@@ -27,6 +29,7 @@ services:
   treelogy-sso-zipkin:
     image: openzipkin/zipkin:latest
     container_name: treelogy-sso-zipkin
+    restart: always
     ports:
     - 9411:9411
 volumes:
