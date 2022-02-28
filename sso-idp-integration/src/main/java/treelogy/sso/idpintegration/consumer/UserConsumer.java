@@ -10,6 +10,10 @@ public class UserConsumer {
 	@RabbitListener(queues = { "${queue.user.name}" })
 	public void receive(@Payload String fileBody) {
 		System.out.println("Message " + fileBody);
+		
+		// Rest
+		
+		
 	}
 
 }

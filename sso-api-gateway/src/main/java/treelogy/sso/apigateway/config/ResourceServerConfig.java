@@ -2,6 +2,8 @@ package treelogy.sso.apigateway.config;
 
 import java.util.Arrays;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +24,8 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
+
+	private Logger logger = LoggerFactory.getLogger(ResourceServerConfig.class);
 
 	@Autowired
 	private JwtTokenStore jwtTokenStore;
