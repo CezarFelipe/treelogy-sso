@@ -8,7 +8,6 @@ services:
   treelogy-sso-rabbitmq:
       image: rabbitmq:3.9.13-management-alpine
       container_name: treelogy-sso-rabbitmq
-      restart: always
       ports:
       - 5672:5672
       - 15672:15672
@@ -18,4 +17,3 @@ services:
   treelogy-sso-integration:
     build: .
     container_name: treelogy-sso-integration
-    restart: always
