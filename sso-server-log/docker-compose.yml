@@ -1,13 +1,9 @@
 version: '3.2'
-networks:
-  default:
-    external: true
-    name: treelogy-sso-net
 services:
   treelogy-sso-prometheus:
     image: prom/prometheus:latest
     restart: always
-    container_name: treelogy-sso-prometheus
+    container_name: treelogy-sso-prometheus-local
     ports:
     - 9090:9090
     command:
@@ -16,7 +12,7 @@ services:
     - ./prometheus.yml:/treelogy-sso-server-log/prometheus.yml
   treelogy-sso-grafana:
     image: grafana/grafana:latest
-    container_name: treelogy-sso-grafana
+    container_name: treelogy-sso-grafana-local
     restart: always
     ports:
     - 3000:3000
@@ -28,7 +24,7 @@ services:
         - prometheus
   treelogy-sso-zipkin:
     image: openzipkin/zipkin:latest
-    container_name: treelogy-sso-zipkin
+    container_name: treelogy-sso-zipkin-local
     restart: always
     ports:
     - 9411:9411

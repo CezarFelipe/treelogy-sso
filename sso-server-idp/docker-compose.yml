@@ -1,33 +1,18 @@
 version: '3.2'
-networks:
-  default:
-    external: true
-    name: treelogy-sso-net
-
 services:
   treelogy-sso-wso2:
     image: wso2/wso2is:latest
-    container_name: treelogy-sso-wso2
-    restart: always
+    container_name: treelogy-sso-wso2-local
     ports:
     - 9443:9443
     links:
       - treelogy-sso-db-wso2-pg12
     depends_on:
       - treelogy-sso-db-wso2-pg12
-  treelogy-sso-wso2-api:
-      build: ../../sso-api-wso2/
-      container_name: treelogy-sso-wso2-api
-      restart: always
-      links:
-        - treelogy-sso-db-wso2-pg12
-      depends_on:
-        - treelogy-sso-db-wso2-pg12
   treelogy-sso-db-wso2-pg12:
     image: postgres:12-alpine
-    container_name: treelogy-sso-db-wso2-pg12
+    container_name: treelogy-sso-db-wso2-pg12-local
     hostname: postgres
-    restart: always
     tty: true
     ports:
       - 5440:5432
