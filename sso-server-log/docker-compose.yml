@@ -1,6 +1,6 @@
 version: '3.2'
 services:
-  treelogy-sso-prometheus:
+  treelogy-sso-prometheus-local:
     image: prom/prometheus:latest
     restart: always
     container_name: treelogy-sso-prometheus-local
@@ -10,7 +10,7 @@ services:
     - --config.file=/treelogy-sso-server-log/prometheus.yml
     volumes:
     - ./prometheus.yml:/treelogy-sso-server-log/prometheus.yml
-  treelogy-sso-grafana:
+  treelogy-sso-grafana-local:
     image: grafana/grafana:latest
     container_name: treelogy-sso-grafana-local
     restart: always
@@ -22,7 +22,7 @@ services:
         - grafana_data:/var/lib/grafana
     depends_on:
         - prometheus
-  treelogy-sso-zipkin:
+  treelogy-sso-zipkin-local:
     image: openzipkin/zipkin:latest
     container_name: treelogy-sso-zipkin-local
     restart: always

@@ -1,6 +1,6 @@
 version: '3.2'
 services:
-  treelogy-sso-rabbitmq:
+  treelogy-sso-rabbitmq-local:
       image: rabbitmq:3.9.13-management-alpine
       container_name: treelogy-sso-rabbitmq-local
       ports:
@@ -9,6 +9,3 @@ services:
       volumes:
         - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
         - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
-  treelogy-sso-integration:
-    build: .
-    container_name: treelogy-sso-integration-local

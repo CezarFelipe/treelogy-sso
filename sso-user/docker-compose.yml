@@ -5,7 +5,7 @@ networks:
     name: treelogy-sso-net
 
 services:
-  treelogy-sso-db-user-pg12:
+  treelogy-sso-db-user-pg12-local:
     image: postgres:12-alpine
     container_name: treelogy-sso-db-user-pg12-local
     hostname: postgres
