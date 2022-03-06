@@ -45,14 +45,17 @@ public class UserIntegrationController extends GenericController {
 	@GetMapping(value = "/user/", produces = "application/json")
 	@SuppressWarnings({ "unchecked" })
 	public ResponseEntity<String> GetUserBySituation(@RequestParam(required = true, name = "situation") String situation) {
-
+			
 		try {
-
+			
+			logger.info("Start some work");
+			
 			Situation getSituation = situationRepository.GetSituationByName(situation);
 
 			if (getSituation == null) {
 
 				throw new Exception("situation " + situation + ConstantException.NOTFOUND);
+				
 			}
             
 			System.out.println(getSituation.getDescription());
@@ -87,7 +90,7 @@ public class UserIntegrationController extends GenericController {
 				}
 									
 				result = BuilderData(userDto, resultList);
-					
+				logger.info("Execute sucess!");	
 			}
 			
 
@@ -106,7 +109,9 @@ public class UserIntegrationController extends GenericController {
 			e.printStackTrace();
 
 			msgError = e.getMessage();
-
+			
+			logger.error(msgError);
+			
 			// RETORN ERROR: assignment of success return values.
 
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;

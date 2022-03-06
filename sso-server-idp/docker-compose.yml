@@ -7,8 +7,7 @@ networks:
 services:
   treelogy-sso-wso2:
     image: wso2/wso2is:latest
-    container_name: treelogy-sso-wso2
-    restart: always
+    container_name: treelogy-sso-wso
     ports:
     - 9443:9443
     links:
@@ -16,9 +15,8 @@ services:
     depends_on:
       - treelogy-sso-db-wso2-pg12
   treelogy-sso-wso2-api:
-      build: ../../sso-api-wso2/
+      build: ./sso-api-idp/
       container_name: treelogy-sso-wso2-api
-      restart: always
       links:
         - treelogy-sso-db-wso2-pg12
       depends_on:
@@ -27,7 +25,6 @@ services:
     image: postgres:12-alpine
     container_name: treelogy-sso-db-wso2-pg12
     hostname: postgres
-    restart: always
     tty: true
     ports:
       - 5440:5432

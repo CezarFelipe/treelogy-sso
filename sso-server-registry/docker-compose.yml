@@ -10,4 +10,3 @@ services:
       container_name: treelogy-sso-service-registry
       ports:
       - 8761:8761
-      restart: always

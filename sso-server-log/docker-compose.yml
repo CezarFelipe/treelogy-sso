@@ -11,9 +11,9 @@ services:
     ports:
     - 9090:9090
     command:
-    - --config.file=/treelogy-sso-server-log/prometheus.yml
+    - --config.file=/sso-server-log/prometheus.yml
     volumes:
-    - ./prometheus.yml:/treelogy-sso-server-log/prometheus.yml
+    - ./prometheus.yml:/sso-server-log/prometheus.yml
   treelogy-sso-grafana:
     image: grafana/grafana:latest
     container_name: treelogy-sso-grafana
